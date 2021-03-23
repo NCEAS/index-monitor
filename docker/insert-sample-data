@@ -1,0 +1,20 @@
+#!/bin/bash
+count=$1
+temp=70
+hum=50
+for ((i=1;i<=$count;i++)); 
+    do 
+        #echo "Val: $i"
+        if (( $i % 2 == 0 ))
+        then
+            temp=`echo "scale=2;$temp-$i/13" | bc`
+            hum=`echo "scale=2;$hum-$i/13" | bc`
+        else
+            temp=`echo "scale=2;$temp+$i/10" | bc`
+            hum=`echo "scale=2;$hum+$i/11" | bc`
+        fi
+        echo "temp: $temp"
+        echo " hum: $hum"
+        docker exec -it timescaledb psql -U postgres -d tutorial -c "INSERT INTO conditions(time, location, temperature, humidity) VALUES (NOW(), 'office', $temp, $hum);"
+        sleep 1
+    done

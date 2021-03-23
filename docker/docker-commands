@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Create a timescaledb instance
+docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=password -v timedb:/var/lib/postgresql/data timescale/timescaledb:2.1.0-pg13
+
+# Connect to SQL in that instance
+docker exec -it timescaledb psql -U postgres
+
+# TODO: Create the timescaleDB data structures
+
+# Create a grafana instance
+docker run -d -p 3000:3000 --name grafana grafana/grafana
+
+# List volumes
+docker volume ls
+
+# Start a project using compose
+docker-compose -p d1index up -d
+
+# view the data in the database
+docker exec -it timescaledb psql -U postgres -d tutorial -c "select * from conditions;"
+
+# Insert some data in the database
+for ((i=1;i<=1000;i++)); do docker exec -it timescaledb psql -U postgres -d tutorial -c "INSERT INTO conditions(time, location, temperature, humidity) VALUES (NOW(), 'office', 70.0+$i, 50.0+$i);"; sleep 1; done
