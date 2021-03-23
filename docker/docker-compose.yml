@@ -14,6 +14,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - timedb:/var/lib/postgresql/data
+      - ./${POSTGRES_DBNAME}.sql:/docker-entrypoint-initdb.d/${POSTGRES_DBNAME}.sql
     networks:
       - timescalenet
 

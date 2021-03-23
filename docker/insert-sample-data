@@ -15,6 +15,6 @@ for ((i=1;i<=$count;i++));
         fi
         echo "temp: $temp"
         echo " hum: $hum"
-        docker exec -it timescaledb psql -U postgres -d tutorial -c "INSERT INTO conditions(time, location, temperature, humidity) VALUES (NOW(), 'office', $temp, $hum);"
+        docker exec -it timescaledb psql -U postgres -d timedb -c "INSERT INTO conditions(time, location, temperature, humidity) VALUES (NOW(), 'office', $temp, $hum);"
         sleep 1
     done

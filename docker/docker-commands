@@ -4,9 +4,19 @@
 docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=password -v timedb:/var/lib/postgresql/data timescale/timescaledb:2.1.0-pg13
 
 # Connect to SQL in that instance
-docker exec -it timescaledb psql -U postgres
+docker exec -it timescaledb psql -U postgres -d tutorial
 
 # TODO: Create the timescaleDB data structures
+docker exec -it timescaledb psql -U postgres -c "CREATE database timedb;"
+docker exec -it timescaledb psql -U postgres -d timedb -c "CREATE EXTENSION IF NOT EXISTS timescaledb;"
+
+CREATE TABLE queue_monitor (
+ time        TIMESTAMPTZ       NOT NULL,
+ queue       TEXT              NOT NULL,
+ queue_size  INTEGER           NULL
+);
+
+SELECT create_hypertable('queue_monitor', 'time');
 
 # Create a grafana instance
 docker run -d -p 3000:3000 --name grafana grafana/grafana
