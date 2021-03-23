@@ -1,0 +1,16 @@
+#!/bin/bash
+count=$1
+repos="https://arcticdata.io/metacat/d1/mn/v2 https://knb.ecoinformatics.org/knb/d1/mn/v2"
+sleeptime=5
+for ((i=1;i<=$count;i++)); 
+    do 
+        for repo in ${repos};
+        do
+            api="${repo}/monitor/status"
+            queue=$(curl -s -o - ${api}|xml sel -t -v '//sizeOfQueue')
+            queue_size=$(($queue + $RANDOM % 10))
+            docker exec -it timescaledb psql -U postgres -d timedb -c "INSERT INTO queue_monitor(time, host, queue, queue_size) VALUES (NOW(), '$repo', 'index', $queue_size);"
+            echo "$repo $queue_size"
+        done
+        sleep ${sleeptime}
+    done
