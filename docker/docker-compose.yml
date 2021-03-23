@@ -3,7 +3,7 @@ version: '3'
 services:
 
   timescaledb:
-    image: timescale/timescaledb:2.1.0-pg13
+    build: .
     container_name: ${POSTGRES_CONTAINER}
     restart: always
     ports:
@@ -15,6 +15,8 @@ services:
     volumes:
       - timedb:/var/lib/postgresql/data
       - ./${POSTGRES_DBNAME}.sql:/docker-entrypoint-initdb.d/${POSTGRES_DBNAME}.sql
+      - ./insert-queue-data:/etc/ofelia/insert-queue-data
+      - ./insert-sample-data:/etc/ofelia/insert-sample-data
     networks:
       - timescalenet
 
@@ -33,6 +35,17 @@ services:
       GF_INSTALL_PLUGINS: grafana-worldmap-panel, citilogics-geoloop-panel
     volumes:
       - grafana:/var/lib/grafana:rw
+    depends_on:
+      - timescaledb
+    networks:
+      - timescalenet
+
+  scheduler:
+    image: mcuadros/ofelia:latest
+    container_name: ofelia
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config.ini:/etc/ofelia/config.ini
     depends_on:
       - timescaledb
     networks:
