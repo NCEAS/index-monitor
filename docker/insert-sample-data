@@ -7,11 +7,11 @@ for ((i=1;i<=$count;i++));
         #echo "Val: $i"
         if (( $i % 2 == 0 ))
         then
-            temp=`echo "scale=2;$temp-$i/13" | bc`
-            hum=`echo "scale=2;$hum-$i/13" | bc`
+            temp=$(($temp - $i/13 + $(($RANDOM % 3))))
+            hum=$(($hum -$i/13 + $RANDOM % 2))
         else
-            temp=`echo "scale=2;$temp+$i/10" | bc`
-            hum=`echo "scale=2;$hum+$i/11" | bc`
+            temp=$(($temp + $i/10 + $(($RANDOM % 3))))
+            hum=$(($hum + $i/11 + $RANDOM % 2))
         fi
         echo "temp: $temp"
         echo " hum: $hum"
