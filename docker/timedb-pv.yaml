@@ -3,11 +3,12 @@ kind: PersistentVolume
 metadata:
   name: timedb-volume
 spec:
-  storageClassName: manual
+  storageClassName: "hostpath"
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
+  persistentVolumeReclaimPolicy: "Delete"
   hostPath:
     path: "/tmp/timedb-volume"
 

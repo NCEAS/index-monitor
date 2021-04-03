@@ -10,6 +10,7 @@ kubectl get configmap timedb-files -o yaml
 
 # Set up perrsistent volumes for the postgres DB
 kubectl apply -f timedb-pv.yaml
+#kubectl patch pv timedb-volume -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"}}'
 kubectl get pv timedb-volume
 kubectl apply -f timedb-pvc.yaml
 kubectl get pv timedb-volume
