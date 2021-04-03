@@ -14,6 +14,10 @@ spec:
       labels:
         app: timedb
     spec:
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: timedb-pv-claim
       containers:
       - name: timescaledb
         image: timedb_timescaledb
@@ -36,3 +40,6 @@ spec:
             configMapKeyRef:
               name: timedb-config
               key: POSTGRES_USER
+        volumeMounts:
+        - mountPath: "/var/lib/postgresql/data"
+          name: postgres-data
