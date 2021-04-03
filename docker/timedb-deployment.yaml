@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timescaledb
+  labels:
+    app: timedb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timedb
+  template:
+    metadata:
+      labels:
+        app: timedb
+    spec:
+      containers:
+      - name: timescaledb
+        image: timedb_timescaledb
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: timedb-config
+              key: POSTGRES_HOST
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: timedb-config
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: timedb-config
+              key: POSTGRES_USER
