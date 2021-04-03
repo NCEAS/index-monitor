@@ -1,0 +1,29 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: timedb-cron
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: timedb-files-volume
+            configMap:
+              name: timedb-files
+              defaultMode: 0744
+          containers:
+            - name: timedbcron
+              image: timedb_timescaledb
+              imagePullPolicy: Never
+              command: ["/bin/bash /etc/timedb/insert-queue-data 1"]
+              volumeMounts:
+              - mountPath: /etc/timedb/insert-queue-data
+                subPath: insert-queue-data
+                name: timedb-files-volume
+              - mountPath: /etc/timedb/insert-sample-data
+                subPath: insert-sample-data
+                name: timedb-files-volume
+          restartPolicy: OnFailure

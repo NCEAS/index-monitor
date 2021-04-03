@@ -50,10 +50,4 @@ spec:
         - mountPath: /docker-entrypoint-initdb.d/timedb.sql
           subPath: timedb.sql
           name: timedb-files-volume
-        - mountPath: /etc/timedb/insert-queue-data
-          subPath: insert-queue-data
-          name: timedb-files-volume
-        - mountPath: /etc/timedb/insert-sample-data
-          subPath: insert-sample-data
-          name: timedb-files-volume
 
