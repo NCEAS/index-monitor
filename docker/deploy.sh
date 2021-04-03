@@ -2,6 +2,11 @@
 
 # Create a ConfigMap with our ENV VARS. Be sure to edit the .env file first
 kubectl create configmap timedb-config --from-env-file=.env
+kubectl get configmap timedb-config -o yaml
+
+# Add any files to be mounted in the volume to another ConfigMap
+kubectl create configmap timedb-files --from-file config
+kubectl get configmap timedb-files -o yaml
 
 # Set up perrsistent volumes for the postgres DB
 kubectl apply -f timedb-pv.yaml

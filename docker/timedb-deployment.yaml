@@ -18,6 +18,10 @@ spec:
       - name: postgres-data
         persistentVolumeClaim:
           claimName: timedb-pv-claim
+      - name: timedb-files-volume
+        configMap:
+          name: timedb-files
+          defaultMode: 0744
       containers:
       - name: timescaledb
         image: timedb_timescaledb
@@ -43,3 +47,13 @@ spec:
         volumeMounts:
         - mountPath: "/var/lib/postgresql/data"
           name: postgres-data
+        - mountPath: /docker-entrypoint-initdb.d/timedb.sql
+          subPath: timedb.sql
+          name: timedb-files-volume
+        - mountPath: /etc/timedb/insert-queue-data
+          subPath: insert-queue-data
+          name: timedb-files-volume
+        - mountPath: /etc/timedb/insert-sample-data
+          subPath: insert-sample-data
+          name: timedb-files-volume
+
