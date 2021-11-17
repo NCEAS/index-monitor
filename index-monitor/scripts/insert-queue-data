@@ -15,7 +15,7 @@ for ((i=1;i<=$count;i++));
             else
                 queue_size=$(($queue))
             fi
-            PGPASSWORD=${POSTGRES_PASSWORD} psql -h timescaledb -U ${POSTGRES_USER} -d ${POSTGRES_DBNAME} -c "INSERT INTO queue_monitor(time, host, queue, queue_size) VALUES (NOW(), '$repo', 'index', $queue_size);"
+            PGPASSWORD=${POSTGRES_PASSWORD} psql -h ${TIMEDB_SERVICE} -U ${POSTGRES_USER} -d ${POSTGRES_DBNAME} -c "INSERT INTO queue_monitor(time, host, queue, queue_size) VALUES (NOW(), '$repo', 'index', $queue_size);"
             echo "$repo $queue_size"
         done
     done

@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-cron
+spec:
+  schedule: "*/1 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: {{ .Release.Name }}-files-volume
+            configMap:
+              name: {{ .Release.Name }}-configfiles
+              defaultMode: 0744
+          containers:
+            - name: timedbcron
+              image: ghcr.io/nceas/index-queue-monitor:v0.1.0
+              imagePullPolicy: Never
+              command:
+              - /bin/sh
+              - -c
+              - date; bash /etc/timedb/insert-queue-data 1
+              volumeMounts:
+              - mountPath: /etc/timedb/insert-queue-data
+                subPath: insert-queue-data
+                name: {{ .Release.Name }}-files-volume
+              - mountPath: /etc/timedb/insert-sample-data
+                subPath: insert-sample-data
+                name: {{ .Release.Name }}-files-volume
+              env:
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  configMapKeyRef:
+                    name: {{ .Release.Name }}-configmap
+                    key: POSTGRES_PASSWORD
+              - name: POSTGRES_USER
+                valueFrom:
+                  configMapKeyRef:
+                    name: {{ .Release.Name }}-configmap
+                    key: POSTGRES_USER
+              - name: POSTGRES_DBNAME
+                valueFrom:
+                  configMapKeyRef:
+                    name: {{ .Release.Name }}-configmap
+                    key: POSTGRES_DBNAME
+              - name: TIMEDB_SERVICE
+                valueFrom:
+                  configMapKeyRef:
+                    name: {{ .Release.Name }}-configmap
+                    key: TIMEDB_SERVICE
+          restartPolicy: OnFailure
