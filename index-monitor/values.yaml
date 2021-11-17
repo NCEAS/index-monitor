@@ -2,6 +2,17 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+grafana:
+    user: admin
+    host: localhost
+    port: 3000
+
+postgres:
+    user: postgres
+    host: localhost
+    port: 5432
+    dbname: timedb
+
 replicaCount: 1
 
 image:

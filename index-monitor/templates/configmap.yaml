@@ -5,14 +5,14 @@ metadata:
   {{- template "index-monitor.labels" . }}
 data:
   GRAFANA_ADMIN_PASSWORD: 5astmetrics100
-  GRAFANA_ADMIN_USER: admin
+  GRAFANA_ADMIN_USER: {{ .Values.grafana.user }}
   GRAFANA_CONTAINER: grafana
-  GRAFANA_HOST: localhost
-  GRAFANA_PORT: "3000"
+  GRAFANA_HOST: {{ .Values.grafana.host }}
+  GRAFANA_PORT: {{ .Values.grafana.port }}
   POSTGRES_CONTAINER: timescaledb
-  POSTGRES_DBNAME: timedb
-  POSTGRES_HOST: localhost
+  POSTGRES_DBNAME: {{ .Values.postgres.dbname }}
+  POSTGRES_HOST: {{ .Values.postgres.host }}
   POSTGRES_PASSWORD: 5astmetrics100
-  POSTGRES_PORT: "5432"
-  POSTGRES_USER: postgres
+  POSTGRES_PORT: {{ .Values.postgres.port }}
+  POSTGRES_USER: {{ .Values.postgres.user }}
   TIMEDB_SERVICE: {{ .Release.Name }}-service
