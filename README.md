@@ -9,10 +9,10 @@ This is a simple dashboard to collect metrics about DataONE and present them in 
 I started refactoring this into a helm-based kubernetes app. It can either be run with transient storage, or with a persistent data store that is provided in the form of a PVC. Two ways to install it are:
 
 - With a transient store (this is the default in values.yaml)
-    - `helm install --set persistence.enabled=false iqm .`
+    - `helm install --set persistence.enabled=false iqm index-monitor`
 
 - With a persistent store (assuming you have already created a PVC with the given name
-    - `helm install --set persistence.enabled=true --set persistence.existingClaimName=timedb-pv-claim iqm .`
+    - `helm install --set persistence.enabled=true --set persistence.existingClaimName=timedb-pv-claim iqm index-monitor`
 
 # (OBSOLETE) Original Installation
 
