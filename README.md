@@ -6,6 +6,6 @@ This is a simple dashboard to collect metrics about DataONE and present them in 
 
 # Installation
 
-The system is based on dockerr images. Configure the application by editing the variables in `docker/.env`, and then run `docker-compose -p timedb up -d` to start the applicaiton. Currently persistent data are stored in docker named volumes, so if those get cleared, the data gets cleared. Eventually we would make use of timescaledb features for clearing old data chunks.  WHen the timescaledb container loads, if the postgres database doesn't exist, then it is loaded from the timedb.sql file.
+The system is based on docker images. Configure the application by editing the variables in `docker/.env`, and then run `docker-compose -p timedb up -d` to start the applicaiton. Currently persistent data are stored in docker named volumes, so if those get cleared, the data gets cleared. Eventually we would make use of timescaledb features for clearing old data chunks.  WHen the timescaledb container loads, if the postgres database doesn't exist, then it is loaded from the timedb.sql file.
 
 YMMV. This is a simple one evening experiment, and not tested much at all.

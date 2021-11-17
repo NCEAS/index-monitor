@@ -1,9 +1,9 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: timedb-cron
 spec:
-  schedule: "* * * * *"
+  schedule: "*/1 * * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -16,9 +16,12 @@ spec:
               defaultMode: 0744
           containers:
             - name: timedbcron
-              image: timedb_timescaledb
+              image: ghcr.io/nceas/index-queue-monitor:v0.1.0
               imagePullPolicy: Never
-              command: ["/bin/bash /etc/timedb/insert-queue-data 1"]
+              command:
+              - /bin/sh
+              - -c
+              - date; bash /etc/timedb/insert-queue-data 1
               volumeMounts:
               - mountPath: /etc/timedb/insert-queue-data
                 subPath: insert-queue-data
@@ -26,4 +29,15 @@ spec:
               - mountPath: /etc/timedb/insert-sample-data
                 subPath: insert-sample-data
                 name: timedb-files-volume
+              env:
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  configMapKeyRef:
+                    name: timedb-config
+                    key: POSTGRES_PASSWORD
+              - name: POSTGRES_USER
+                valueFrom:
+                  configMapKeyRef:
+                    name: timedb-config
+                    key: POSTGRES_USER
           restartPolicy: OnFailure

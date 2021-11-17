@@ -24,7 +24,7 @@ spec:
           defaultMode: 0744
       containers:
       - name: timescaledb
-        image: timedb_timescaledb
+        image: ghcr.io/nceas/index-queue-monitor:v0.1.0
         imagePullPolicy: Never
         ports:
         - containerPort: 5432
