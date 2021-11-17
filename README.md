@@ -26,10 +26,16 @@ kubectl create secret generic credentials --from-env-file ./credentials.txt
 This index-mointor app is a helm-based kubernetes app. It can either be run with transient storage, or with a persistent data store that is provided in the form of a PVC. Two ways to install it are:
 
 - With a transient store (this is the default in values.yaml)
-    - `helm install --set persistence.enabled=false indexmon index-monitor`
+    - `helm install --set persistence.enabled=false -n index-monitor --create-namespace indexmon index-monitor`
 
 - With a persistent store (assuming you have already created a PVC with the given name
-    - `helm install --set persistence.enabled=true --set persistence.existingClaimName=timedb-pv-claim indexmon index-monitor`
+    - `helm install --set persistence.enabled=true --set persistence.existingClaimName=timedb-pv-claim -n index-monitor --create-namespace indexmon index-monitor`
+
+Once the chart is installed, you can see the state of the app using:
+
+```
+kubectl get all -n index-monitor
+```
 
 # (OBSOLETE) Original Installation
 
