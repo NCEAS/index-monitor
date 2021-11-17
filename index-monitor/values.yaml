@@ -11,7 +11,7 @@ image:
 
 ## Persist data to a persistent volume
 persistence:
-  enabled: true
+  enabled: false
   ## If enabled and defined: existingClaimName is used, else use emptyDir
   existingClaimName: "timedb-pv-claim"
 
