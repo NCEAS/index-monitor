@@ -28,8 +28,8 @@ spec:
           defaultMode: 0744
       containers:
       - name: timescaledb
-        image: ghcr.io/nceas/index-queue-monitor:v0.1.0
-        imagePullPolicy: Never
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 5432
         env:
