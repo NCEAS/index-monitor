@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create a ConfigMap with our ENV VARS. Be sure to edit the .env file first
-kubectl create configmap timedb-config --from-env-file=.env
+kubectl create configmap timedb-config --from-env-file=env
 kubectl get configmap timedb-config -o yaml
 
 # Add any files to be mounted in the volume to another ConfigMap
