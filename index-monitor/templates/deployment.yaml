@@ -2,8 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-deployment
-  labels:
-    app: timedb
+  {{- template "index-monitor.labels" . }}
 spec:
   replicas: 1
   selector:
