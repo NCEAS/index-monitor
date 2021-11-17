@@ -1,0 +1,20 @@
+#!/bin/bash
+count=$1
+temp=70
+hum=50
+for ((i=1;i<=$count;i++)); 
+    do 
+        #echo "Val: $i"
+        if (( $i % 2 == 0 ))
+        then
+            temp=$(($temp - $i/13 + $(($RANDOM % 3))))
+            hum=$(($hum -$i/13 + $RANDOM % 2))
+        else
+            temp=$(($temp + $i/10 + $(($RANDOM % 3))))
+            hum=$(($hum + $i/11 + $RANDOM % 2))
+        fi
+        echo "temp: $temp"
+        echo " hum: $hum"
+        psql -U postgres -d timedb -c "INSERT INTO conditions(time, location, temperature, humidity) VALUES (NOW(), 'office', $temp, $hum);"
+        sleep 1
+    done

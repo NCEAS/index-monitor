@@ -1,0 +1,21 @@
+#!/bin/bash
+count=$1
+add_random=${2:-no}
+echo "Random: ${add_random}"
+repos="https://arcticdata.io/metacat/d1/mn/v2 https://knb.ecoinformatics.org/knb/d1/mn/v2"
+for ((i=1;i<=$count;i++)); 
+    do 
+        for repo in ${repos};
+        do
+            api="${repo}/monitor/status"
+            queue=$(curl -s -o - ${api}|xml sel -t -v '//sizeOfQueue')
+            if [ "${add_random}" = "yes" ]
+            then
+                queue_size=$(($queue + $RANDOM % 10))
+            else
+                queue_size=$(($queue))
+            fi
+            PGPASSWORD=${POSTGRES_PASSWORD} psql -h timescaledb -U ${POSTGRES_USER} -d ${POSTGRES_DBNAME} -c "INSERT INTO queue_monitor(time, host, queue, queue_size) VALUES (NOW(), '$repo', 'index', $queue_size);"
+            echo "$repo $queue_size"
+        done
+    done
