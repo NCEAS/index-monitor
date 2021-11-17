@@ -14,6 +14,12 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+## Persist data to a persistent volume
+persistence:
+  enabled: true
+  ## If enabled and defined: existingClaimName is used, else use emptyDir
+  existingClaimName: "timedb-pv-claim"
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

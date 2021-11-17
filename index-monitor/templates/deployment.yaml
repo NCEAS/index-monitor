@@ -14,9 +14,14 @@ spec:
         app: timedb
     spec:
       volumes:
+      {{- if and .Values.persistence.enabled .Values.persistence.existingClaimName }}
       - name: postgres-data
         persistentVolumeClaim:
-          claimName: timedb-pv-claim
+          claimName: {{ .Values.persistence.existingClaimName }}
+      {{- else }}
+      - name: postgres-data
+        emptyDir: {}
+      {{- end }}
       - name: {{ .Release.Name }}-files-volume
         configMap:
           name: {{ .Release.Name }}-configfiles
@@ -49,4 +54,3 @@ spec:
         - mountPath: /docker-entrypoint-initdb.d/timedb.sql
           subPath: timedb.sql
           name: {{ .Release.Name }}-files-volume
-
