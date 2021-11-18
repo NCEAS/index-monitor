@@ -7,7 +7,7 @@ This is a simple dashboard to collect metrics about DataONE and present them in 
 - **Status**: Work-in-progress
 - **Contributors**: Matthew B. Jones
 - **LICENSE**: Apache 2.0
-- **Website**: https://github.com/DataONEorg/index-monitor/
+- **Website**: https://github.com/NCEAS/index-monitor/
 
 ## Credentials
 
