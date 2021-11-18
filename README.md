@@ -23,7 +23,7 @@ postgres_password=pg-pw-goes-here-00
 then you should be able to create the secret by running:
 
 ```sh
-kubectl create secret generic credentials --from-env-file ./credentials.txt
+kubectl create secret generic credentials -n index-monitor --from-env-file ./credentials.txt
 ```
 
 ## Helm Chart Installation
